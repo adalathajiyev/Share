@@ -15,8 +15,8 @@ public class StockPerformanceController : ControllerBase
 
     public StockPerformanceController(ILogger<StockPerformanceController> logger, IStockPriceService stockPriceService)
     {
-        _logger = logger;
-        _stockPriceService = stockPriceService;
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _stockPriceService = stockPriceService ?? throw new ArgumentNullException(nameof(stockPriceService));
     }
 
     [HttpGet("daily")]
