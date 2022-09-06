@@ -34,8 +34,6 @@ public class StockPerformanceControllerTests
 
             stockPriceService.Setup(m => m.EvaluateDailyStockPerformance(It.Is<string>(a => a.Length > 1))).ReturnsAsync(stockPerformanceDTO);
 
-            stockPriceService.Setup(m => m.EvaluateDailyStockPerformance(It.Is<string>(a => a.Length < 2))).ThrowsAsync(new BadHttpRequestException("symbol should be more than 1 charachter"));
-
             _contoller = new StockPerformanceController(
                 logger: logger.Object,
                 stockPriceService: stockPriceService.Object
@@ -55,7 +53,7 @@ public class StockPerformanceControllerTests
         public void CanAddTheory(string symbol)
         {
 
-            var actual = JsonConvert.SerializeObject(_contoller.GetDailyPerformance(symbol));
+            var actual = JsonConvert.SerializeObject(_contoller.GetDailyPerformance(symbol).Result);
             var expected = JsonConvert.SerializeObject(stockPerformanceDTO);
 
             Assert.Equal(expected, actual);
